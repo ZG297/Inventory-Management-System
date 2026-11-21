@@ -33,23 +33,23 @@ class Product {
 		
 		
 		// getters
-		int getProductID () {
+		int getProductID () const {
 			return productID;
 		}
 		
-		string getProductName () {
+		string getProductName () const {
 			return name;
 		}
 		
-		int getQuantity () {
+		int getQuantity () const {
 			return quantity;
 		}
 		
-		double getPrice () {
+		double getPrice () const {
 			return price;
 		}
 		
-		int getThreshold () {
+		int getThreshold () const {
 			return threshold;
 		}
 		
