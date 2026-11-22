@@ -5,8 +5,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstdlib>
 using namespace std;
 
+// Singly linked list of transactions
 class TransactionList {
 private:
     TransactionNode* head;
@@ -24,6 +26,7 @@ public:
         clear();
     }
 
+    // Deletes all nodes and resets the list
     void clear() {
         TransactionNode* current = head;
         while (current != NULL) {
@@ -36,6 +39,7 @@ public:
         size = 0;
     }
 
+    // Adds a transaction at the end of the list
     void append(Transaction t) {
         TransactionNode* newNode = new TransactionNode(t);
 
@@ -49,14 +53,15 @@ public:
         size++;
     }
 
+    // Prints all transactions in a table
     void display() const {
         if (head == NULL) {
             cout << "No transactions yet." << endl;
             return;
         }
 
-        cout << "ID\tProduct\tType\tQty" << endl;
-        cout << "-----------------------------" << endl;
+        cout << "ID\tProduct\tType\tQty\tDate" << endl;
+        cout << "-------------------------------------------------" << endl;
 
         TransactionNode* current = head;
         while (current != NULL) {
@@ -83,10 +88,11 @@ public:
 
         TransactionNode* current = head;
         while (current != NULL) {
-            file << "ID: " << current->data.transactionID
-                 << " Product: " << current->data.productID
-                 << " Type: " << current->data.type
-                 << " Qty: " << current->data.quantity << endl;
+            file << current->data.transactionID << "|"
+                 << current->data.productID << "|"
+                 << current->data.type << "|"
+                 << current->data.quantity << "|"
+                 << current->data.date << endl;
             current = current->next;
         }
         file.close();
@@ -100,10 +106,19 @@ public:
 
         clear();
 
-        int tid, pid, qty;
-        string type, l1, l2, l3, l4;
-        while (file >> l1 >> tid >> l2 >> pid >> l3 >> type >> l4 >> qty) {
-            append(Transaction(tid, pid, type, qty));
+        string sid, spid, type, sqty, date;
+        while (getline(file, sid, '|')) {
+            getline(file, spid, '|');
+            getline(file, type, '|');
+            getline(file, sqty, '|');
+            getline(file, date);
+
+            // atoi converts text to a number
+            int tid = atoi(sid.c_str());
+            int pid = atoi(spid.c_str());
+            int qty = atoi(sqty.c_str());
+
+            append(Transaction(tid, pid, type, qty, date));
         }
         file.close();
     }
